@@ -112,6 +112,8 @@ export const PostEditor = React.createClass( {
 		this.debouncedAutosave = debounce( this.throttledAutosave, 3000 );
 		this.switchEditorVisualMode = this.switchEditorMode.bind( this, 'tinymce' );
 		this.switchEditorHtmlMode = this.switchEditorMode.bind( this, 'html' );
+		this.onPreviewClick = this.onPreview.bind( this, 'preview' );
+		this.onViewClick = this.onPreview.bind( this, 'view' );
 		this.useDefaultSidebarFocus();
 		analytics.mc.bumpStat( 'calypso_default_sidebar_mode', this.props.editorSidebarPreference );
 
@@ -204,6 +206,7 @@ export const PostEditor = React.createClass( {
 		const mode = this.getEditorMode();
 		const isInvalidURL = this.state.loadingError;
 		const siteURL = site ? site.URL + '/' : null;
+
 		let isPage;
 		let isTrashed;
 		let hasAutosave;
@@ -230,7 +233,7 @@ export const PostEditor = React.createClass( {
 						isSaveBlocked={ this.isSaveBlocked() }
 						isPublishing={ this.state.isPublishing }
 						isSaving={ this.state.isSaving }
-						onPreview={ this.onPreview }
+						onPreview={ this.onPreviewClick }
 						onPublish={ this.onPublish }
 						onSave={ this.onSave }
 						onSaveDraft={ this.props.onSaveDraft }
@@ -249,7 +252,7 @@ export const PostEditor = React.createClass( {
 							<EditorNotice
 								{ ...this.state.notice }
 								onDismissClick={ this.hideNotice }
-								onViewClick={ this.onPreview } />
+								onViewClick={ this.onViewClick } />
 							<EditorActionBar
 								isNew={ this.state.isNew }
 								onPrivatePublish={ this.onPublish }
@@ -336,8 +339,8 @@ export const PostEditor = React.createClass( {
 							onClose={ this.onPreviewClose }
 							isSaving={ this.state.isSaving || this.state.isAutosaving }
 							isLoading={ this.state.isLoading }
-							previewUrl={ this.state.previewUrl }
-							externalUrl={ this.state.previewUrl }
+							previewUrl={ this.previewAction === 'view' ? this.state.post.URL : this.state.previewUrl }
+							externalUrl={ this.previewAction === 'view' ? this.state.post.URL : this.state.previewUrl }
 						/>
 						: null }
 				</div>
@@ -574,9 +577,11 @@ export const PostEditor = React.createClass( {
 		this.setState( { isSaving: true } );
 	},
 
-	onPreview: function( event ) {
+	onPreview: function( action, event ) {
 		var status = 'draft',
 			previewPost;
+
+		this.previewAction = action;
 
 		if ( this.props.isSitePreviewable && ! event.metaKey && ! event.ctrlKey ) {
 			return this.iframePreview();
@@ -592,10 +597,13 @@ export const PostEditor = React.createClass( {
 
 		previewPost = function() {
 			if ( this._previewWindow ) {
-				this._previewWindow.location = this.state.previewUrl;
+				this._previewWindow.location = ( action === 'view' ? this.state.post.URL : this.state.previewUrl );
 				this._previewWindow.focus();
 			} else {
-				this._previewWindow = window.open( this.state.previewUrl, 'WordPress.com Post Preview' );
+				this._previewWindow = window.open(
+					( action === 'view' ? this.state.post.URL : this.state.previewUrl ),
+					'WordPress.com Post Preview'
+				);
 			}
 		}.bind( this );
 
