@@ -35,6 +35,7 @@ const binArgs = [
 
 	// react-codemod options
 	'--pure-component=true',
+	'--mixin-module-name="react-pure-render/mixin"', // Your days are numbered, pure-render-mixin!
 
 	// Transform target
 	args[ 0 ],
