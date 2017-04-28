@@ -118,10 +118,11 @@
 	width: 150px;
 	height: 150px;
 	border: 0;
+	margin: 0;
 }
 
 .edit-gravatar .drop-zone__content {
-	font-size: 1em;
+	top: calc( 50% - 0.5em ); // align with button text
 }
 
 .edit-gravatar .drop-zone__content-text {
