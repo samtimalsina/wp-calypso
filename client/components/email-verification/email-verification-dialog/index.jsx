@@ -51,7 +51,7 @@ class VerifyEmailDialog extends React.Component {
 			return i18n.translate( 'Email Sent' );
 		}
 		if ( this.state.pendingRequest ) {
-			return <Spinner className="email-verification__confirmation-dialog-spinner" />;
+			return <Spinner className="email-verification-dialog__confirmation-dialog-spinner" />;
 		}
 		return i18n.translate( 'Resend Email' );
 	}
@@ -88,7 +88,7 @@ class VerifyEmailDialog extends React.Component {
 				'{{wrapper}}%(email)s{{/wrapper}} {{emailPreferences}}change{{/emailPreferences}}',
 				{
 					components: {
-						wrapper: <span className="email-verification__confirmation-dialog-email-wrapper" />,
+						wrapper: <span className="email-verification-dialog__confirmation-dialog-email-wrapper" />,
 						emailPreferences: <a href="/me/account" />
 					},
 					args: {
@@ -102,12 +102,12 @@ class VerifyEmailDialog extends React.Component {
 			<Dialog
 				isVisible={ true }
 				buttons={ this.getDialogButtons() }
-				additionalClassNames="email-verification__confirmation-dialog is-narrow"
+				additionalClassNames="email-verification-dialog__confirmation-dialog is-narrow"
 			>
-				<h1 className="email-verification__confirmation-dialog-heading is-variable-height">{ strings.confirmHeading }</h1>
-				<p className="email-verification__confirmation-dialog-email">{ strings.confirmEmail }</p>
-				<p className="email-verification__confirmation-dialog-explanation">{ strings.confirmExplanation }</p>
-				<p className="email-verification__confirmation-dialog-reasoning">{ strings.confirmReasoning }</p>
+				<h1 className="email-verification-dialog__confirmation-dialog-heading is-variable-height">{ strings.confirmHeading }</h1>
+				<p className="email-verification-dialog__confirmation-dialog-email">{ strings.confirmEmail }</p>
+				<p className="email-verification-dialog__confirmation-dialog-explanation">{ strings.confirmExplanation }</p>
+				<p className="email-verification-dialog__confirmation-dialog-reasoning">{ strings.confirmReasoning }</p>
 			</Dialog>
 		);
 	}
