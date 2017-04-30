@@ -4,6 +4,7 @@
 import React from 'react';
 import noop from 'lodash/noop';
 import i18n from 'i18n-calypso';
+import { connect } from 'react-redux';
 
 /**
  * Internal dependencies
@@ -11,64 +12,47 @@ import i18n from 'i18n-calypso';
 import Dialog from 'components/dialog';
 import FormButton from 'components/forms/form-button';
 import Spinner from 'components/spinner';
-import userFactory from 'lib/user';
-
-const user = userFactory();
+import { getCurrentUserEmail } from 'state/current-user/selectors';
+import {
+	verifyEmail,
+	resetVerifyEmailState,
+} from 'state/current-user/email-verification/actions';
 
 class VerifyEmailDialog extends React.Component {
-	constructor( props ) {
-		super( props );
 
-		this.state = {
-			pendingRequest: false,
-			emailSent: false,
-			error: false
-		};
-
-		this.handleSendVerification = this.sendVerification.bind( this );
-	}
-
-	sendVerification( e ) {
+	sendVerification = ( e ) => {
 		e.preventDefault();
-
-		if ( this.state.pendingRequest ) {
-			return;
-		}
-
-		this.setState( { pendingRequest: true } );
-
-		user.sendVerificationEmail( function( error, response ) {
-			this.setState( {
-				emailSent: response && response.success,
-				error: error,
-				pendingRequest: false
-			} );
-		}.bind( this ) );
-	}
+		this.props.verifyEmail();
+	};
 
 	getResendButtonLabel() {
-		if ( this.state.emailSent ) {
+		if ( this.props.emailSent ) {
 			return i18n.translate( 'Email Sent' );
 		}
-		if ( this.state.pendingRequest ) {
+		if ( this.props.pendingRequest ) {
 			return <Spinner className="email-verification-dialog__confirmation-dialog-spinner" />;
 		}
 		return i18n.translate( 'Resend Email' );
 	}
+
+	handleClose = () => {
+		this.props.resetVerifyEmailState();
+		this.props.onClose();
+	};
 
 	getDialogButtons() {
 		return [
 			<FormButton
 				key="close"
 				isPrimary={ true }
-				onClick={ this.props.onClose }>
+				onClick={ this.handleClose }>
 					{ i18n.translate( 'OK' ) }
 			</FormButton>,
 			<FormButton
 				key="resend"
 				isPrimary={ false }
-				disabled={ this.state.pendingRequest || this.state.emailSent }
-				onClick={ this.handleSendVerification }>
+				disabled={ this.props.pendingRequest || this.props.emailSent }
+				onClick={ this.sendVerification }>
 				{ this.getResendButtonLabel() }
 			</FormButton>
 		];
@@ -92,7 +76,7 @@ class VerifyEmailDialog extends React.Component {
 						emailPreferences: <a href="/me/account" />
 					},
 					args: {
-						email: this.props.user.data.email
+						email: this.props.email
 					}
 				}
 			)
@@ -114,12 +98,27 @@ class VerifyEmailDialog extends React.Component {
 }
 
 VerifyEmailDialog.propTypes = {
-	user: React.PropTypes.object.isRequired,
-	onClose: React.PropTypes.func
+	onClose: React.PropTypes.func,
+	// connected props:
+	email: React.PropTypes.string,
+	pendingRequest: React.PropTypes.bool,
+	emailSent: React.PropTypes.bool,
+	error: React.PropTypes.bool,
 };
 
 VerifyEmailDialog.defaultProps = {
 	onClose: noop
 };
 
-export default VerifyEmailDialog;
+export default connect(
+	state => ( {
+		email: getCurrentUserEmail( state ),
+		pendingRequest: state.currentUser.emailVerification.pendingRequest,
+		emailSent: state.currentUser.emailVerification.emailSent,
+		error: state.currentUser.emailVerification.error,
+	} ),
+	{
+		verifyEmail,
+		resetVerifyEmailState,
+	}
+)( VerifyEmailDialog );
