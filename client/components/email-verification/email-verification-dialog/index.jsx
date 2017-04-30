@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
  * Internal dependencies
  */
 import Dialog from 'components/dialog';
-import FormButton from 'components/forms/form-button';
+import Button from 'components/button';
 import Spinner from 'components/spinner';
 import { getCurrentUserEmail } from 'state/current-user/selectors';
 import {
@@ -19,11 +19,6 @@ import {
 } from 'state/current-user/email-verification/actions';
 
 class VerifyEmailDialog extends React.Component {
-
-	sendVerification = ( e ) => {
-		e.preventDefault();
-		this.props.verifyEmail();
-	};
 
 	getResendButtonLabel() {
 		if ( this.props.emailSent ) {
@@ -42,19 +37,19 @@ class VerifyEmailDialog extends React.Component {
 
 	getDialogButtons() {
 		return [
-			<FormButton
+			<Button
+				key="resend"
+				primary={ false }
+				disabled={ this.props.pendingRequest || this.props.emailSent }
+				onClick={ this.props.verifyEmail }>
+				{ this.getResendButtonLabel() }
+			</Button>,
+			<Button
 				key="close"
-				isPrimary={ true }
+				primary={ true }
 				onClick={ this.handleClose }>
 					{ i18n.translate( 'OK' ) }
-			</FormButton>,
-			<FormButton
-				key="resend"
-				isPrimary={ false }
-				disabled={ this.props.pendingRequest || this.props.emailSent }
-				onClick={ this.sendVerification }>
-				{ this.getResendButtonLabel() }
-			</FormButton>
+			</Button>
 		];
 	}
 
