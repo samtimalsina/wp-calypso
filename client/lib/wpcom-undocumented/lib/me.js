@@ -244,7 +244,11 @@ UndocumentedMe.prototype.devices = function( callback ) {
 UndocumentedMe.prototype.sendVerificationEmail = function( callback ) {
 	debug( '/me/send-verification-email' );
 
-	return this.wpcom.req.post( { path: '/me/send-verification-email' }, callback );
+	if ( callback ) {
+		return this.wpcom.req.post( { path: '/me/send-verification-email' }, callback );
+	}
+
+	return this.wpcom.req.post( { path: '/me/send-verification-email' } );
 };
 
 UndocumentedMe.prototype.getNotificationSettings = function( callback ) {
