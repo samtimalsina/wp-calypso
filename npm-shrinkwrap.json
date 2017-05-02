@@ -58,7 +58,7 @@
       "version": "0.8.1"
     },
     "ajv": {
-      "version": "4.11.7"
+      "version": "4.11.8"
     },
     "ajv-keywords": {
       "version": "1.5.1",
@@ -609,7 +609,7 @@
       "version": "1.2.1"
     },
     "bl": {
-      "version": "1.2.0",
+      "version": "1.2.1",
       "dependencies": {
         "readable-stream": {
           "version": "2.2.9"
@@ -774,7 +774,7 @@
       "dev": true
     },
     "check-node-version": {
-      "version": "2.0.1",
+      "version": "2.1.0",
       "dependencies": {
         "minimist": {
           "version": "1.2.0"
@@ -1021,14 +1021,6 @@
         "minimist": {
           "version": "1.2.0",
           "dev": true
-        },
-        "pinkie": {
-          "version": "2.0.4",
-          "dev": true
-        },
-        "pinkie-promise": {
-          "version": "2.0.1",
-          "dev": true
         }
       }
     },
@@ -1181,14 +1173,6 @@
       "dependencies": {
         "globby": {
           "version": "5.0.0",
-          "dev": true
-        },
-        "pinkie": {
-          "version": "2.0.4",
-          "dev": true
-        },
-        "pinkie-promise": {
-          "version": "2.0.1",
           "dev": true
         }
       }
@@ -1813,7 +1797,7 @@
       "dev": true
     },
     "filename-regex": {
-      "version": "2.0.0"
+      "version": "2.0.1"
     },
     "filesize": {
       "version": "3.2.1"
@@ -1833,12 +1817,6 @@
       "dependencies": {
         "path-exists": {
           "version": "2.1.0"
-        },
-        "pinkie": {
-          "version": "2.0.4"
-        },
-        "pinkie-promise": {
-          "version": "2.0.1"
         }
       }
     },
@@ -1994,12 +1972,7 @@
       "version": "9.17.0"
     },
     "globby": {
-      "version": "3.0.1",
-      "dependencies": {
-        "glob": {
-          "version": "5.0.15"
-        }
-      }
+      "version": "6.1.0"
     },
     "globjoin": {
       "version": "0.1.4",
@@ -2197,15 +2170,6 @@
         },
         "commander": {
           "version": "2.9.0"
-        },
-        "globby": {
-          "version": "6.1.0"
-        },
-        "pinkie": {
-          "version": "2.0.4"
-        },
-        "pinkie-promise": {
-          "version": "2.0.1"
         }
       }
     },
@@ -2216,7 +2180,7 @@
       "version": "1.1.8"
     },
     "ignore": {
-      "version": "3.2.7",
+      "version": "3.3.0",
       "dev": true
     },
     "immediate": {
@@ -2434,7 +2398,7 @@
       "version": "1.0.0"
     },
     "is-windows": {
-      "version": "1.0.0"
+      "version": "1.0.1"
     },
     "isarray": {
       "version": "1.0.0"
@@ -2768,15 +2732,7 @@
       "version": "3.0.2"
     },
     "load-json-file": {
-      "version": "1.1.0",
-      "dependencies": {
-        "pinkie": {
-          "version": "2.0.4"
-        },
-        "pinkie-promise": {
-          "version": "2.0.1"
-        }
-      }
+      "version": "1.1.0"
     },
     "loader-utils": {
       "version": "0.2.17",
@@ -2958,20 +2914,8 @@
       "version": "1.2.0",
       "dev": true,
       "dependencies": {
-        "globby": {
-          "version": "6.1.0",
-          "dev": true
-        },
         "minimist": {
           "version": "1.2.0",
-          "dev": true
-        },
-        "pinkie": {
-          "version": "2.0.4",
-          "dev": true
-        },
-        "pinkie-promise": {
-          "version": "2.0.1",
           "dev": true
         }
       }
@@ -3103,7 +3047,7 @@
       "version": "1.6.3"
     },
     "node-gyp": {
-      "version": "3.6.0",
+      "version": "3.6.1",
       "dependencies": {
         "minimatch": {
           "version": "3.0.3"
@@ -3282,8 +3226,7 @@
       "version": "1.0.11"
     },
     "object.assign": {
-      "version": "4.0.4",
-      "dev": true
+      "version": "4.0.4"
     },
     "object.omit": {
       "version": "2.0.1"
@@ -3420,15 +3363,7 @@
       "version": "0.1.7"
     },
     "path-type": {
-      "version": "1.1.0",
-      "dependencies": {
-        "pinkie": {
-          "version": "2.0.4"
-        },
-        "pinkie-promise": {
-          "version": "2.0.1"
-        }
-      }
+      "version": "1.1.0"
     },
     "pause-stream": {
       "version": "0.0.11"
@@ -3454,10 +3389,10 @@
       "version": "2.3.0"
     },
     "pinkie": {
-      "version": "1.0.0"
+      "version": "2.0.4"
     },
     "pinkie-promise": {
-      "version": "1.0.0"
+      "version": "2.0.1"
     },
     "pipetteur": {
       "version": "2.0.3",
@@ -3488,7 +3423,21 @@
       }
     },
     "postcss-cli": {
-      "version": "2.5.1"
+      "version": "2.5.1",
+      "dependencies": {
+        "glob": {
+          "version": "5.0.15"
+        },
+        "globby": {
+          "version": "3.0.1"
+        },
+        "pinkie": {
+          "version": "1.0.0"
+        },
+        "pinkie-promise": {
+          "version": "1.0.0"
+        }
+      }
     },
     "postcss-less": {
       "version": "0.14.0",
@@ -3734,14 +3683,6 @@
       "version": "3.1.0",
       "dev": true,
       "dependencies": {
-        "pinkie": {
-          "version": "2.0.4",
-          "dev": true
-        },
-        "pinkie-promise": {
-          "version": "2.0.1",
-          "dev": true
-        },
         "readable-stream": {
           "version": "2.2.9",
           "dev": true
@@ -3837,7 +3778,7 @@
       }
     },
     "regenerator-runtime": {
-      "version": "0.10.4"
+      "version": "0.10.5"
     },
     "regenerator-transform": {
       "version": "0.9.11"
@@ -4040,22 +3981,30 @@
       "version": "1.11.1"
     },
     "sass-graph": {
-      "version": "2.1.2",
+      "version": "2.2.2",
       "dependencies": {
+        "camelcase": {
+          "version": "3.0.0"
+        },
         "cliui": {
           "version": "3.2.0"
         },
-        "window-size": {
-          "version": "0.2.0"
-        },
         "yargs": {
-          "version": "4.8.1"
+          "version": "6.6.0"
         }
       }
     },
     "sax": {
       "version": "1.2.2",
       "dev": true
+    },
+    "scss-tokenizer": {
+      "version": "0.2.1",
+      "dependencies": {
+        "source-map": {
+          "version": "0.4.4"
+        }
+      }
     },
     "seed-random": {
       "version": "2.2.0"
@@ -4427,14 +4376,6 @@
           "version": "3.9.2",
           "dev": true
         },
-        "pinkie": {
-          "version": "2.0.4",
-          "dev": true
-        },
-        "pinkie-promise": {
-          "version": "2.0.1",
-          "dev": true
-        },
         "readable-stream": {
           "version": "2.2.9",
           "dev": true
@@ -4607,7 +4548,7 @@
       }
     },
     "to-fast-properties": {
-      "version": "1.0.2"
+      "version": "1.0.3"
     },
     "to-no-case": {
       "version": "1.0.2"
@@ -4913,7 +4854,7 @@
           "dev": true
         },
         "filesize": {
-          "version": "3.5.6",
+          "version": "3.5.9",
           "dev": true
         },
         "finalhandler": {
@@ -5051,7 +4992,7 @@
           "dev": true
         },
         "filesize": {
-          "version": "3.5.6",
+          "version": "3.5.9",
           "dev": true
         },
         "isarray": {
@@ -5295,7 +5236,7 @@
       "version": "3.10.0"
     },
     "yargs-parser": {
-      "version": "2.4.1",
+      "version": "4.2.1",
       "dependencies": {
         "camelcase": {
           "version": "3.0.0"
