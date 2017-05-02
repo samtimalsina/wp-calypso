@@ -7,14 +7,14 @@ import React from 'react';
  * Internal dependencies
  */
 import { renderWithReduxStore } from 'lib/react-helpers';
-import TrafficMain from 'my-sites/site-settings/traffic/main';
+import SecurityMain from 'my-sites/site-settings/settings-security/main';
 
 export default {
-	traffic( context ) {
+	security( context ) {
 		renderWithReduxStore(
-			React.createElement( TrafficMain ),
+			React.createElement( SecurityMain ),
 			document.getElementById( 'primary' ),
 			context.store
 		);
-	}
+	},
 };

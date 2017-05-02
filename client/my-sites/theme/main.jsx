@@ -273,6 +273,16 @@ const ThemeSheet = React.createClass( {
 		return <div>{ this.props.description }</div>;
 	},
 
+	renderNextTheme() {
+		const { next, siteSlug } = this.props;
+		const sitePart = siteSlug ? `/${ siteSlug }` : '';
+
+		const nextThemeHref = `/theme/${ next }${ sitePart }`;
+		return <SectionHeader
+			href={ nextThemeHref }
+			label={ i18n.translate( 'Next theme' ) } />;
+	},
+
 	renderOverviewTab() {
 		const { isWpcomTheme, download } = this.props;
 
@@ -284,6 +294,7 @@ const ThemeSheet = React.createClass( {
 				{ this.renderFeaturesCard() }
 				{ download && <ThemeDownloadCard href={ download } /> }
 				{ isWpcomTheme && this.renderRelatedThemes() }
+				{ isWpcomTheme && this.renderNextTheme() }
 			</div>
 		);
 	},
@@ -583,8 +594,7 @@ const ConnectedThemeSheet = connectOptions(
 		}
 
 		return (
-			<ThemesSiteSelectorModal { ...props }
-				sourcePath={ `/theme/${ props.id }${ props.section ? '/' + props.section : '' }` }>
+			<ThemesSiteSelectorModal { ...props }>
 				<ThemeSheet />
 			</ThemesSiteSelectorModal>
 		);
