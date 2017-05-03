@@ -1,7 +1,7 @@
 /**
-* External dependencies
-*/
-import React from 'react';
+ * External dependencies
+ */
+import React, { Component } from 'react';
 import Gridicon from 'gridicons';
 
 /**
@@ -11,11 +11,8 @@ import Popover from 'components/popover';
 import classNames from 'classnames';
 import analytics from 'lib/analytics';
 
-export default React.createClass( {
-
-	displayName: 'InfoPopover',
-
-	propTypes: {
+export default class InfoPopover extends Component {
+	static propTypes = {
 		id: React.PropTypes.string,
 		position: React.PropTypes.string,
 		className: React.PropTypes.string,
@@ -25,19 +22,11 @@ export default React.createClass( {
 		ignoreContext: React.PropTypes.shape( {
 			getDOMNode: React.PropTypes.function
 		} ),
-	},
+	};
 
-	getDefaultProps() {
-		return {
-			position: 'bottom'
-		};
-	},
+	static defaultProps = { position: 'bottom' };
 
-	getInitialState() {
-		return {
-			showPopover: false
-		};
-	},
+	state = { showPopover: false };
 
 	render() {
 		return (
@@ -69,21 +58,21 @@ export default React.createClass( {
 				</Popover>
 			</span>
 		);
-	},
+	}
 
-	_onClick( event ) {
+	_onClick = ( event ) => {
 		event.preventDefault();
 		this.setState( {
 			showPopover: ! this.state.showPopover },
 			this._recordStats
 		);
-	},
+	}
 
-	_onClose() {
+	_onClose = () => {
 		this.setState( { showPopover: false }, this._recordStats );
-	},
+	}
 
-	_recordStats() {
+	_recordStats = () => {
 		const { gaEventCategory, popoverName } = this.props;
 
 		if ( gaEventCategory && popoverName ) {
@@ -91,4 +80,4 @@ export default React.createClass( {
 			analytics.ga.recordEvent( gaEventCategory, 'InfoPopover: ' + popoverName + dialogState );
 		}
 	}
-} );
+}
