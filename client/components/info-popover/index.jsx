@@ -37,8 +37,8 @@ export default class InfoPopover extends Component {
 					'info-popover',
 					{ is_active: this.state.showPopover },
 					this.props.className )
-					}
-				>
+				}
+			>
 				<Gridicon icon="info-outline" size={ 18 } />
 				<Popover
 					id={ this.props.id }
@@ -53,8 +53,8 @@ export default class InfoPopover extends Component {
 							this.props.className
 						) }
 					rootClassName={ this.props.rootClassName }
-					>
-						{ this.props.children }
+				>
+					{ this.props.children }
 				</Popover>
 			</span>
 		);
@@ -68,9 +68,7 @@ export default class InfoPopover extends Component {
 		);
 	}
 
-	_onClose = () => {
-		this.setState( { showPopover: false }, this._recordStats );
-	}
+	_onClose = () => this.setState( { showPopover: false }, this._recordStats );
 
 	_recordStats = () => {
 		const { gaEventCategory, popoverName } = this.props;
