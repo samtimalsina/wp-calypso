@@ -13,6 +13,7 @@ import analytics from 'lib/analytics';
 
 export default class InfoPopover extends Component {
 	static propTypes = {
+		autoRtl: PropTypes.bool,
 		className: PropTypes.string,
 		gaEventCategory: PropTypes.string,
 		id: PropTypes.string,
@@ -33,7 +34,10 @@ export default class InfoPopover extends Component {
 		rootClassName: PropTypes.string,
 	};
 
-	static defaultProps = { position: 'bottom' };
+	static defaultProps = {
+		autoRtl: true,
+		position: 'bottom',
+	};
 
 	state = { showPopover: false };
 
@@ -69,6 +73,7 @@ export default class InfoPopover extends Component {
 			>
 				<Gridicon icon="info-outline" size={ 18 } />
 				<Popover
+					autoRtl={ this.props.autoRtl }
 					id={ this.props.id }
 					isVisible={ this.state.showPopover }
 					context={ this.refs && this.refs.infoPopover }
@@ -76,10 +81,10 @@ export default class InfoPopover extends Component {
 					position={ this.props.position }
 					onClose={ this.handleClose }
 					className={ classNames(
-							'popover',
-							'info-popover__tooltip',
-							this.props.className
-						) }
+						'popover',
+						'info-popover__tooltip',
+						this.props.className
+					) }
 					rootClassName={ this.props.rootClassName }
 				>
 					{ this.props.children }
