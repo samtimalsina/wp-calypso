@@ -424,10 +424,10 @@ const LoggedInForm = React.createClass( {
 		}
 
 		if ( authorizeError.message.indexOf( 'already_connected' ) >= 0 ) {
-			return <JetpackConnectNotices noticeType="alreadyConnected" />;
+			return <JetpackConnectNotices noticeType="alreadyConnected" url={ queryObject.site } />;
 		}
 		if ( this.props.requestHasExpiredSecretError() ) {
-			return <JetpackConnectNotices noticeType="secretExpired" siteUrl={ queryObject.site } />;
+			return <JetpackConnectNotices noticeType="secretExpired" url={ queryObject.site } />;
 		}
 		if ( this.props.requestHasXmlrpcError() ) {
 			return this.renderXmlrpcFeedback();
