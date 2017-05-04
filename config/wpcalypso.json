@@ -117,6 +117,7 @@
 		"upgrades/precancellation-chat": true,
 		"upgrades/presale-chat": true,
 		"woocommerce/extension-dashboard": true,
+		"woocommerce/extension-shipping": true,
 		"woocommerce/extension-stats": true,
 		"wp-login": true
 	},

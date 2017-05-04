@@ -53,6 +53,9 @@ export default function() {
 	if ( config.isEnabled( 'woocommerce/extension-dashboard' ) ) {
 		page( '/store/:site', siteSelection, navigation, Controller.dashboard );
 		page( '/store/products/:site/add', siteSelection, navigation, Controller.addProduct );
+	}
+
+	if ( config.isEnabled( 'woocommerce/extension-shipping' ) ) {
 		page( '/store/settings/:site?/shipping', siteSelection, navigation, Controller.shipping );
 	}
 
