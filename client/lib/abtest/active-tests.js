@@ -8,14 +8,6 @@ module.exports = {
 		},
 		defaultVariation: 'singlePurchaseFlow'
 	},
-	signupPlansCallToAction: {
-		datestamp: '20170403',
-		variations: {
-			original: 0,
-			modified: 100, // Setting to 100% until strings are translated
-		},
-		defaultVariation: 'original',
-	},
 	automatedTransfer2: {
 		datestamp: '20170316',
 		variations: {
