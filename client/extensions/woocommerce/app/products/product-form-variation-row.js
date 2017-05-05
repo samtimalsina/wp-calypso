@@ -12,6 +12,8 @@ import FormCheckbox from 'components/forms/form-checkbox';
 import FormTextInput from 'components/forms/form-text-input';
 import FormCurrencyInput from 'components/forms/form-currency-input';
 import FormTextInputWithAffixes from 'components/forms/form-text-input-with-affixes';
+import Button from 'components/button';
+import formattedVariationName from '../../lib/formatted-variation-name';
 
 class ProductFormVariationRow extends React.Component {
 
@@ -20,6 +22,7 @@ class ProductFormVariationRow extends React.Component {
 		variation: PropTypes.object.isRequired,
 		manageStock: PropTypes.bool,
 		editProductVariation: PropTypes.func.isRequired,
+		onShowDialog: PropTypes.func.isRequired,
 	};
 
 	constructor( props ) {
@@ -31,16 +34,10 @@ class ProductFormVariationRow extends React.Component {
 		this.setWeight = this.setWeight.bind( this );
 		this.setDimension = this.setDimension.bind( this );
 		this.setStockQuantity = this.setStockQuantity.bind( this );
+		this.showDialog = this.showDialog.bind( this );
 	}
 
-	// TODO Consider splitting out into a helper lib if we end up needing it in other places.
-	formattedVariationName( { attributes } ) {
-		return attributes.map( function( attribute ) {
-			return attribute.option;
-		} ).join( ' - ' );
-	}
-
-	// TODO: Consider consolidating the following set functions with a helper (along with the form-details functions).
+	// TODO: Consolidate set and toggle functions with a helper (along with the form-details functions).
 	setPrice( e ) {
 		const { variation, product, editProductVariation } = this.props;
 		editProductVariation( product, variation, { regular_price: e.target.value } );
@@ -72,6 +69,11 @@ class ProductFormVariationRow extends React.Component {
 		editProductVariation( product, variation, { manage_stock: ! variation.manage_stock } );
 	}
 
+	showDialog() {
+		const { variation, onShowDialog } = this.props;
+		onShowDialog( variation.id );
+	}
+
 	// TODO Pull in correct currency, dimension, and weight from from settings.
 	render() {
 		const { variation, translate, manageStock } = this.props;
@@ -90,7 +92,7 @@ class ProductFormVariationRow extends React.Component {
 					{ ! allVariationsRow && (
 						<div className="products__product-form-variation-image"></div>
 					) }
-					{ allVariationsRow && translate( 'All variations' ) || this.formattedVariationName( variation ) }
+					{ allVariationsRow && translate( 'All variations' ) || formattedVariationName( variation ) }
 				</td>
 				<td>
 					<FormCurrencyInput
@@ -154,7 +156,13 @@ class ProductFormVariationRow extends React.Component {
 				</td>
 				<td>
 					{ ! allVariationsRow && (
-						<Gridicon icon="cog" />
+						<Button
+							borderless
+							onClick={ this.showDialog }
+							aria-label={ translate( 'Settings' ) }
+						>
+							<Gridicon icon="cog" />
+						</Button>
 					) }
 				</td>
 			</tr>

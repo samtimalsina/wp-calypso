@@ -155,3 +155,28 @@
 	}
 
 }
+
+.products__product-form-variation-modal {
+	min-width: 600px;
+
+	.vertical-menu {
+		width: 200px;
+	}
+
+	.vertical-menu__items {
+		padding-left: 10px;
+	}
+
+	.products__product-form-modal-wrapper {
+		display: flex;
+		padding: 10px;
+	}
+
+	.products__product-form-modal-contents {
+		padding-left: 40px;
+	}
+
+	.form-toggle__wrapper {
+		margin-left: 5px;
+	}
+}
