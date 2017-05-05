@@ -9,24 +9,27 @@ import { get } from 'lodash';
 import config from 'config';
 import {
 	ANALYTICS_SUPER_PROPS_UPDATE,
+	NOTIFICATIONS_PANEL_TOGGLE,
 	SELECTED_SITE_SET,
 	SITE_RECEIVE,
 	SITES_RECEIVE,
-	SITES_UPDATE
+	SITES_UPDATE,
 } from 'state/action-types';
 import analytics from 'lib/analytics';
 import cartStore from 'lib/cart/store';
+import { isNotificationsOpen } from 'state/selectors';
 import { getSelectedSite, getSelectedSiteId } from 'state/ui/selectors';
 import { getCurrentUser } from 'state/current-user/selectors';
+import keyboardShortcuts from 'lib/keyboard-shortcuts';
 
 /**
  * Module variables
  */
-const keyBoardShortcutsEnabled = config.isEnabled( 'keyboard-shortcuts' );
-let keyboardShortcuts;
+const globalKeyBoardShortcutsEnabled = config.isEnabled( 'keyboard-shortcuts' );
+let globalKeyboardShortcuts;
 
-if ( keyBoardShortcutsEnabled ) {
-	keyboardShortcuts = require( 'lib/keyboard-shortcuts/global' )();
+if ( globalKeyBoardShortcutsEnabled ) {
+	globalKeyboardShortcuts = require( 'lib/keyboard-shortcuts/global' )();
 }
 
 const desktopEnabled = config.isEnabled( 'desktop' );
@@ -75,7 +78,20 @@ const updateSelectedSiteForCart = ( dispatch, action, getState ) => {
 const updatedSelectedSiteForKeyboardShortcuts = ( dispatch, action, getState ) => {
 	const state = getState();
 	const selectedSite = getSelectedSite( state );
-	keyboardShortcuts.setSelectedSite( selectedSite );
+	globalKeyboardShortcuts.setSelectedSite( selectedSite );
+};
+
+/**
+ * Sets isNotificationOpen for lib/keyboard-shortcuts
+ *
+ * @param {function} dispatch - redux dispatch function
+ * @param {object}   action   - the dispatched action
+ * @param {function} getState - redux getState function
+ */
+const updateNotificationsOpenForKeyboardShortcuts = ( dispatch, action, getState ) => {
+	// flip the state here, since the reducer hasn't had a chance to update yet
+	const toggledState = ! isNotificationsOpen( getState() );
+	keyboardShortcuts.setNotificationsOpen( toggledState );
 };
 
 /**
@@ -96,6 +112,10 @@ const handler = ( dispatch, action, getState ) => {
 		case ANALYTICS_SUPER_PROPS_UPDATE:
 			return updateSelectedSiteForAnalytics( dispatch, action, getState );
 
+		//when the notifications panel is open keyboard events should not fire.
+		case NOTIFICATIONS_PANEL_TOGGLE:
+			return updateNotificationsOpenForKeyboardShortcuts( dispatch, action, getState );
+
 		case SELECTED_SITE_SET:
 		case SITE_RECEIVE:
 		case SITES_RECEIVE:
@@ -103,7 +123,7 @@ const handler = ( dispatch, action, getState ) => {
 			// Wait a tick for the reducer to update the state tree
 			setTimeout( () => {
 				updateSelectedSiteForCart( dispatch, action, getState );
-				if ( keyBoardShortcutsEnabled ) {
+				if ( globalKeyBoardShortcutsEnabled ) {
 					updatedSelectedSiteForKeyboardShortcuts( dispatch, action, getState );
 				}
 				if ( desktopEnabled ) {

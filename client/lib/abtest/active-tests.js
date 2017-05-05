@@ -8,15 +8,6 @@ module.exports = {
 		},
 		defaultVariation: 'singlePurchaseFlow'
 	},
-	automatedTransfer2: {
-		datestamp: '20170316',
-		variations: {
-			enabled: 100,
-			disabled: 0
-		},
-		defaultVariation: 'disabled',
-		allowExistingUsers: false
-	},
 	jetpackNoMonthly: {
 		datestamp: '20170410',
 		variations: {
@@ -36,6 +27,14 @@ module.exports = {
 	},
 	signupThemeStepCopyChanges: {
 		datestamp: '20170420',
+		variations: {
+			original: 50,
+			modified: 50,
+		},
+		defaultVariation: 'original',
+	},
+	signupPlansReorderTest: {
+		datestamp: '20170410',
 		variations: {
 			original: 50,
 			modified: 50,
