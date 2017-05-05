@@ -194,11 +194,8 @@ export const PostEditor = React.createClass( {
 		}
 	},
 
-	onEditorKeyUp: function( event ) {
-		if ( event.code === 'AltLeft' || 'AltRight' ) {
-			this.getSelectedText();
-		}
-
+	onEditorKeyUp: function() {
+		this.getSelectedText();
 		this.debouncedSaveRawContent();
 	},
 
