@@ -101,34 +101,34 @@ class ProductFormVariationRow extends React.Component {
 						size="4"
 					/>
 				</td>
-				<td className="products__product-dimensions-input">
-					<FormTextInput
-						name="length"
-						placeholder={ translate( 'L' ) }
-						type="number"
-						value={ dimensions.length || '' }
-						onChange={ this.setDimension }
-						className="products__product-dimensions-length"
-					/>
-					<FormTextInput
-						name="width"
-						placeholder={ translate( 'W' ) }
-						type="number"
-						value={ dimensions.width || '' }
-						onChange={ this.setDimension }
-						className="products__product-dimensions-width"
-					/>
-					<FormTextInputWithAffixes
-						name="height"
-						placeholder={ translate( 'H' ) }
-						suffix="in"
-						type="number"
-						value={ dimensions.height || '' }
-						onChange={ this.setDimension }
-						className="products__product-dimensions-height"
-					/>
-				</td>
-				<td>
+				<td className="products__product-dimensions-weight">
+					<div className="products__product-dimensions-input">
+						<FormTextInput
+							name="length"
+							placeholder={ translate( 'L' ) }
+							type="number"
+							value={ dimensions.length || '' }
+							onChange={ this.setDimension }
+							className="products__product-dimensions-length"
+						/>
+						<FormTextInput
+							name="width"
+							placeholder={ translate( 'W' ) }
+							type="number"
+							value={ dimensions.width || '' }
+							onChange={ this.setDimension }
+							className="products__product-dimensions-width"
+						/>
+						<FormTextInputWithAffixes
+							name="height"
+							placeholder={ translate( 'H' ) }
+							suffix="in"
+							type="number"
+							value={ dimensions.height || '' }
+							onChange={ this.setDimension }
+							className="products__product-dimensions-height"
+						/>
+					</div>
 					<FormTextInputWithAffixes
 						name="weight"
 						type="number"
@@ -136,6 +136,7 @@ class ProductFormVariationRow extends React.Component {
 						value={ variation.weight || '' }
 						onChange={ this.setWeight }
 						size="4"
+						className="products__product-weight-input"
 					/>
 				</td>
 				<td>

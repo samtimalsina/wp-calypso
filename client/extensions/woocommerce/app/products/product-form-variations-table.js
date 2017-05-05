@@ -45,7 +45,6 @@ class ProductFormVariationsTable extends React.Component {
 							<th></th>
 							<th>{ translate( 'Price' ) }</th>
 							<th>{ translate( 'Dimensions & weight' ) }</th>
-							<th></th>
 							<th>{ translate( 'Manage stock' ) }</th>
 							<th></th>
 						</tr>
