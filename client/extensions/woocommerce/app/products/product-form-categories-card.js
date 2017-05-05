@@ -53,7 +53,7 @@ const ProductFormCategoriesCard = (
 					onChange={ handleChange }
 				/>
 				<FormSettingExplanation>
-					{ translate( 'Add a category so this product is easy to find.' ) }
+					{ translate( 'Add a category so your customers can easily find this product.' ) }
 				</FormSettingExplanation>
 			</FormFieldSet>
 		</Card>
@@ -70,4 +70,3 @@ ProductFormCategoriesCard.propTypes = {
 };
 
 export default localize( ProductFormCategoriesCard );
-
