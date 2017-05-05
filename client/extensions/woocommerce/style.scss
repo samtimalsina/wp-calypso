@@ -1,5 +1,3 @@
-@import 'app/shipping/style';
-
 .is-section-woocommerce {
 	.layout__primary {
 		display: flex;
@@ -8,6 +6,8 @@
 }
 
 .woocommerce {
+	@import 'app/shipping/style';
+
 	flex-grow: 1;
 	max-width: 720px;
 
