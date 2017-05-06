@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import noop from 'lodash/noop';
 import i18n from 'i18n-calypso';
 import { connect } from 'react-redux';
+import { get } from 'lodash';
 
 /**
  * Internal dependencies
@@ -108,9 +109,9 @@ VerifyEmailDialog.defaultProps = {
 export default connect(
 	state => ( {
 		email: getCurrentUserEmail( state ),
-		pendingRequest: state.currentUser.emailVerification.pendingRequest,
-		emailSent: state.currentUser.emailVerification.emailSent,
-		error: state.currentUser.emailVerification.error,
+		pendingRequest: get( state, 'currentUser.emailVerification.pendingRequest' ),
+		emailSent: get( state, 'currentUser.emailVerification.emailSent' ),
+		error: get( state, 'currentUser.emailVerification.error' ),
 	} ),
 	{
 		verifyEmail,
