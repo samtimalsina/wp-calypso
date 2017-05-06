@@ -21,7 +21,7 @@ import {
 class VerifyEmailDialog extends React.Component {
 
 	getResendButtonLabel() {
-		if ( this.props.emailSent ) {
+		if ( this.props.emailSent || this.props.error ) {
 			return i18n.translate( 'Email Sent' );
 		}
 		if ( this.props.pendingRequest ) {
@@ -40,7 +40,7 @@ class VerifyEmailDialog extends React.Component {
 			<Button
 				key="resend"
 				primary={ false }
-				disabled={ this.props.pendingRequest || this.props.emailSent }
+				disabled={ this.props.pendingRequest || this.props.emailSent || this.props.error }
 				onClick={ this.props.verifyEmail }>
 				{ this.getResendButtonLabel() }
 			</Button>,
