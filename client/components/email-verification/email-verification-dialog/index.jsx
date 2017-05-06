@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import React from 'react';
+import React, { Component } from 'react';
 import noop from 'lodash/noop';
 import i18n from 'i18n-calypso';
 import { connect } from 'react-redux';
@@ -18,7 +18,7 @@ import {
 	resetVerifyEmailState,
 } from 'state/current-user/email-verification/actions';
 
-class VerifyEmailDialog extends React.Component {
+class VerifyEmailDialog extends Component {
 
 	getResendButtonLabel() {
 		if ( this.props.emailSent || this.props.error ) {
