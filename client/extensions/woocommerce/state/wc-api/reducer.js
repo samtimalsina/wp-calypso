@@ -2,6 +2,7 @@
  * Internal dependencies
  */
 import error from './error-reducer';
+import products from './products/reducer';
 import {
 	SERIALIZE,
 	DESERIALIZE,
@@ -10,6 +11,7 @@ import {
 const initialState = {};
 
 const handlers = {
+	...products,
 	...error,
 };
 

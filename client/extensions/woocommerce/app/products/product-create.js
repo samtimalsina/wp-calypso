@@ -8,8 +8,11 @@ import { connect } from 'react-redux';
 /**
  * Internal dependencies
  */
+import { getSelectedSiteId } from 'state/ui/selectors';
+
 import { getCurrentlyEditingProduct } from '../../state/ui/products/selectors';
 import { editProduct, editProductAttribute } from '../../state/ui/products/actions';
+import { createProduct } from '../../state/wc-api/products/actions';
 import ProductForm from './product-form';
 import ProductHeader from './product-header';
 
@@ -39,6 +42,8 @@ class ProductCreate extends Component {
 
 	onSave = () => {
 		// TODO: Add action dispatch to save this product.
+		const { siteId, product } = this.props;
+		this.props.createProduct( siteId, product );
 	}
 
 	render() {
@@ -62,9 +67,11 @@ class ProductCreate extends Component {
 }
 
 function mapStateToProps( state ) {
+	const siteId = getSelectedSiteId( state );
 	const product = getCurrentlyEditingProduct( state );
 
 	return {
+		siteId,
 		product,
 	};
 }
@@ -72,6 +79,7 @@ function mapStateToProps( state ) {
 function mapDispatchToProps( dispatch ) {
 	return bindActionCreators(
 		{
+			createProduct,
 			editProduct,
 			editProductAttribute,
 		},
