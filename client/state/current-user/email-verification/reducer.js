@@ -1,12 +1,13 @@
 /**
  * External dependencies
  */
-import { createReducer } from 'state/utils';
-// import { combineReducers } from 'redux';
+import { combineReducers } from 'redux';
+import { stubTrue, stubFalse } from 'lodash';
 
 /**
  * Internal dependencies
  */
+import { createReducer } from 'state/utils';
 import {
 	EMAIL_VERIFY_REQUEST,
 	EMAIL_VERIFY_REQUEST_SUCCESS,
@@ -14,21 +15,29 @@ import {
 	EMAIL_VERIFY_STATE_RESET,
 } from 'state/action-types';
 
-export default createReducer( {}, {
-	[ EMAIL_VERIFY_REQUEST ]: () => ( {
-		pendingRequest: true,
-		emailSent: false,
-		error: false,
-	} ),
-	[ EMAIL_VERIFY_REQUEST_SUCCESS ]: () => ( {
-		pendingRequest: false,
-		emailSent: true,
-		error: false,
-	} ),
-	[ EMAIL_VERIFY_REQUEST_FAILURE ]: () => ( {
-		pendingRequest: false,
-		emailSent: false,
-		error: true,
-	} ),
-	[ EMAIL_VERIFY_STATE_RESET ]: () => ( {} ),
+export const pendingRequest = createReducer( false, {
+	[ EMAIL_VERIFY_REQUEST ]: stubTrue,
+	[ EMAIL_VERIFY_REQUEST_SUCCESS ]: stubFalse,
+	[ EMAIL_VERIFY_REQUEST_FAILURE ]: stubFalse,
+	[ EMAIL_VERIFY_STATE_RESET ]: stubFalse,
+} );
+
+export const emailSent = createReducer( false, {
+	[ EMAIL_VERIFY_REQUEST ]: stubFalse,
+	[ EMAIL_VERIFY_REQUEST_SUCCESS ]: stubTrue,
+	[ EMAIL_VERIFY_REQUEST_FAILURE ]: stubFalse,
+	[ EMAIL_VERIFY_STATE_RESET ]: stubFalse,
+} );
+
+export const error = createReducer( false, {
+	[ EMAIL_VERIFY_REQUEST ]: stubFalse,
+	[ EMAIL_VERIFY_REQUEST_SUCCESS ]: stubFalse,
+	[ EMAIL_VERIFY_REQUEST_FAILURE ]: stubTrue,
+	[ EMAIL_VERIFY_STATE_RESET ]: stubFalse,
+} );
+
+export default combineReducers( {
+	pendingRequest,
+	emailSent,
+	error,
 } );
