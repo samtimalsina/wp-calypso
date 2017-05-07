@@ -3,6 +3,7 @@
  */
 import { expect } from 'chai';
 import { noop } from 'lodash';
+import sinon from 'sinon';
 
 /**
  * Internal dependencies
@@ -41,10 +42,11 @@ describe( 'actions', () => {
 
 	describe( '#uploadGravatar', () => {
 		it( 'dispatches request action when thunk triggered', () => {
+
 			uploadGravatar( 'file', 'bearerToken', 'email' )( spy );
-			expect( spy ).to.have.been.calledWith( {
+			expect( spy ).to.have.been.calledWith( sinon.match( {
 				type: GRAVATAR_UPLOAD_REQUEST
-			} );
+			} ) );
 		} );
 
 		describe( 'successful request', () => {
@@ -68,9 +70,9 @@ describe( 'actions', () => {
 			it( 'dispatches success action', () => {
 				return uploadGravatar( 'file', 'bearerToken', 'email' )( spy )
 					.then( () => {
-						expect( spy ).to.have.been.calledWith( {
+						expect( spy ).to.have.been.calledWith( sinon.match( {
 							type: GRAVATAR_UPLOAD_REQUEST_SUCCESS
-						} );
+						} ) );
 					} );
 			} );
 		} );
@@ -85,9 +87,9 @@ describe( 'actions', () => {
 			it( 'dispatches failure action', () => {
 				return uploadGravatar( 'file', 'bearerToken', 'email' )( spy )
 					.then( () => {
-						expect( spy ).to.have.been.calledWith( {
+						expect( spy ).to.have.been.calledWith( sinon.match( {
 							type: GRAVATAR_UPLOAD_REQUEST_FAILURE
-						} );
+						} ) );
 					} );
 			} );
 		} );
@@ -101,10 +103,10 @@ describe( 'actions', () => {
 				errorMessage,
 				statName
 			} )( spy );
-			expect( spy ).to.have.been.calledWith( {
+			expect( spy ).to.have.been.calledWith( sinon.match( {
 				type: GRAVATAR_RECEIVE_IMAGE_FAILURE,
 				errorMessage
-			} );
+			} ) );
 		} );
 	} );
 } );
