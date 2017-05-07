@@ -29,14 +29,17 @@ import Spinner from 'components/spinner';
 import {
 	receiveGravatarImageFailed,
 	uploadGravatar,
-	clickButton,
-	receiveImage,
 } from 'state/current-user/gravatar-status/actions';
 import ImageEditor from 'blocks/image-editor';
 import InfoPopover from 'components/info-popover';
 import ExternalLink from 'components/external-link';
 import VerifyEmailDialog from 'components/email-verification/verify-email-dialog';
 import DropZone from 'components/drop-zone';
+import {
+	recordTracksEvent,
+	recordGoogleEvent,
+	composeAnalytics,
+} from 'state/analytics/actions';
 
 /**
  * Module dependencies
@@ -60,19 +63,21 @@ export class EditGravatar extends Component {
 		resetAllImageEditorState: PropTypes.func,
 		uploadGravatar: PropTypes.func,
 		user: PropTypes.object,
+		recordClickButtonEvent: PropTypes.func,
+		recordReceiveImageEvent: PropTypes.func,
 	};
 
 	onReceiveFile = ( files ) => {
 		const {
 			receiveGravatarImageFailed: receiveGravatarImageFailedAction,
 			translate,
-			receiveImage: receiveImageAction,
+			recordReceiveImageEvent,
 		} = this.props;
 		const extension = path.extname( files[ 0 ].name )
 			.toLowerCase()
 			.substring( 1 );
 
-		receiveImageAction();
+		recordReceiveImageEvent();
 
 		if ( ALLOWED_FILE_EXTENSIONS.indexOf( extension ) === -1 ) {
 			let errorMessage = '';
@@ -183,7 +188,7 @@ export class EditGravatar extends Component {
 	}
 
 	handleClick = () => {
-		this.props.clickButton( { isVerified: this.props.user.email_verified } );
+		this.props.recordClickButtonEvent( { isVerified: this.props.user.email_verified } );
 
 		if ( this.props.user.email_verified ) {
 			return;
@@ -291,11 +296,14 @@ export default connect(
 		user: getCurrentUser( state ) || {},
 		isUploading: isCurrentUserUploadingGravatar( state ),
 	} ),
-	{
+	dispatch => ( {
 		resetAllImageEditorState,
 		receiveGravatarImageFailed,
 		uploadGravatar,
-		clickButton,
-		receiveImage,
-	}
+		recordClickButtonEvent: ( { isVerified } ) => dispatch( composeAnalytics(
+			recordTracksEvent( 'calypso_edit_gravatar_click', { userVerified: isVerified } ),
+			recordGoogleEvent( 'Me', 'Clicked on Edit Gravatar Button in Profile' )
+		) ),
+		recordReceiveImageEvent: () => dispatch( recordTracksEvent( 'calypso_edit_gravatar_file_receive' ) ),
+	} )
 )( localize( EditGravatar ) );

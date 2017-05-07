@@ -17,9 +17,7 @@ import {
 import {
 	bumpStat,
 	recordTracksEvent,
-	recordGoogleEvent,
 	withAnalytics,
-	composeAnalytics,
 } from 'state/analytics/actions';
 
 const gravatarUploadFailure = flowRight(
@@ -72,20 +70,5 @@ export function receiveGravatarImageFailed( { errorMessage, statName } ) {
 				errorMessage,
 			} )
 		)() );
-	};
-}
-
-export function clickButton( { isVerified } ) {
-	return dispatch => {
-		dispatch( composeAnalytics(
-			recordTracksEvent( 'calypso_edit_gravatar_click', { userVerified: isVerified } ),
-			recordGoogleEvent( 'Me', 'Clicked on Edit Gravatar Button in Profile' )
-		) );
-	};
-}
-
-export function receiveImage() {
-	return dispatch => {
-		dispatch( recordTracksEvent( 'calypso_edit_gravatar_file_receive' ) );
 	};
 }
