@@ -13,6 +13,8 @@ import {
 	LOGIN_REQUEST,
 	LOGIN_REQUEST_FAILURE,
 	LOGIN_REQUEST_SUCCESS,
+	LOGIN_TWOFACTOR_PUSH_POLL_START,
+	LOGIN_TWOFACTOR_PUSH_POLL_STOP,
 	TWO_FACTOR_AUTHENTICATION_LOGIN_REQUEST,
 	TWO_FACTOR_AUTHENTICATION_LOGIN_REQUEST_FAILURE,
 	TWO_FACTOR_AUTHENTICATION_LOGIN_REQUEST_SUCCESS,
@@ -73,6 +75,7 @@ export const loginUser = ( usernameOrEmail, password, rememberMe ) => dispatch =
 			dispatch( {
 				type: LOGIN_REQUEST_SUCCESS,
 				usernameOrEmail,
+				rememberMe,
 				data: response.body && response.body.data,
 			} );
 		} ).catch( ( error ) => {
@@ -127,3 +130,6 @@ export const loginUserWithTwoFactorVerificationCode = ( user_id, two_step_code, 
 			return Promise.reject( errorMessage );
 		} );
 };
+
+export const startPollAppPushAuth = () => ( { type: LOGIN_TWOFACTOR_PUSH_POLL_START } );
+export const stopPollAppPushAuth = () => ( { type: LOGIN_TWOFACTOR_PUSH_POLL_STOP } );
