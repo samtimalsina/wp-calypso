@@ -35,6 +35,7 @@ describe( 'reducer', () => {
 			'twoFactorAuth',
 			'isRequestingTwoFactorAuth',
 			'twoFactorAuthRequestError',
+			'twoFactorAuthPushPoll',
 		] );
 	} );
 
@@ -303,10 +304,11 @@ describe( 'reducer', () => {
 			};
 			const state = twoFactorAuth( null, {
 				type: LOGIN_REQUEST_SUCCESS,
-				data
+				data,
+				rememberMe: true
 			} );
 
-			expect( state ).to.eql( data );
+			expect( state ).to.eql( { ...data, remember_me: true } );
 		} );
 
 		it( 'should set twoFactorAuth to null value if a request is unsuccessful', () => {
