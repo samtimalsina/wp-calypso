@@ -2,6 +2,7 @@
  * External dependencies
  */
 import React from 'react';
+import { localize } from 'i18n-calypso';
 import url from 'url';
 import noop from 'lodash/noop';
 
@@ -14,7 +15,7 @@ import FeedSubscriptionActions from 'lib/reader-feed-subscriptions/actions';
 
 const minSearchLength = 8; // includes protocol
 
-var FollowingEditSubscribeForm = React.createClass( {
+var FollowingEditSubscribeForm = localize( React.createClass( {
 
 	propTypes: {
 		onSearch: React.PropTypes.func,
@@ -141,14 +142,14 @@ var FollowingEditSubscribeForm = React.createClass( {
 		}
 
 		return (
-			<div className="following-edit__subscribe-form">
+		    <div className="following-edit__subscribe-form">
 				<SearchCard
 					isOpen={ this.props.isSearchOpen }
 					autoFocus={ true }
 					key="newSubscriptionSearch"
 					onSearch={ this.handleSearch }
 					onSearchClose={ this.handleSearchClose }
-					placeholder={ this.translate( 'Enter a site URL to follow', { context: 'field placeholder' } ) }
+					placeholder={ this.props.translate( 'Enter a site URL to follow', { context: 'field placeholder' } ) }
 					delaySearch={ false }
 					ref="followingEditSubscriptionSearch"
 					onKeyDown={ this.handleKeyDown }
@@ -160,6 +161,6 @@ var FollowingEditSubscribeForm = React.createClass( {
 		);
 	}
 
-} );
+} ) );
 
 export default FollowingEditSubscribeForm;

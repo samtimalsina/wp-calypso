@@ -2,6 +2,7 @@
  * External dependencies
  */
 import React from 'react';
+import { localize } from 'i18n-calypso';
 import noop from 'lodash/noop';
 
 /**
@@ -11,7 +12,7 @@ import wpcom from 'lib/wp';
 import Button from 'components/button';
 import FilePicker from 'components/file-picker';
 
-const FollowingImportButton = React.createClass( {
+const FollowingImportButton = localize( React.createClass( {
 	propTypes: {
 		onError: React.PropTypes.func,
 		onImport: React.PropTypes.func,
@@ -68,13 +69,13 @@ const FollowingImportButton = React.createClass( {
 
 	render() {
 		return (
-			<FilePicker accept=".xml,.opml" onPick={ this.onPick } >
+		    <FilePicker accept=".xml,.opml" onPick={ this.onPick } >
 				<Button compact disabled={ this.state.disabled } >
-					{ this.translate( 'Import' ) }
+					{ this.props.translate( 'Import' ) }
 				</Button>
 			</FilePicker>
 		);
 	}
-} );
+} ) );
 
 export default FollowingImportButton;

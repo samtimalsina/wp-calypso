@@ -3,7 +3,9 @@
  */
 import React from 'react';
 
-var FollowingEditNavigation = React.createClass( {
+import { localize } from 'i18n-calypso';
+
+var FollowingEditNavigation = localize( React.createClass( {
 
 	propTypes: { totalSubscriptions: React.PropTypes.number },
 
@@ -13,7 +15,7 @@ var FollowingEditNavigation = React.createClass( {
 			return null;
 		}
 
-		return this.translate(
+		return this.props.translate(
 			'%(count)d site',
 			'%(count)d sites',
 			{
@@ -30,6 +32,6 @@ var FollowingEditNavigation = React.createClass( {
 			</div>
 		);
 	}
-} );
+} ) );
 
 export default FollowingEditNavigation;

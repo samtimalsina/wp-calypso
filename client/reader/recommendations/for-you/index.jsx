@@ -1,4 +1,5 @@
 import React from 'react';
+import { localize } from 'i18n-calypso';
 import times from 'lodash/times';
 import url from 'url';
 
@@ -20,7 +21,7 @@ import { recordAction, recordGaEvent, recordTrack } from 'reader/stats';
 import { getSiteUrl } from 'reader/route';
 import { decodeEntities } from 'lib/formatting';
 
-const RecommendedForYou = React.createClass( {
+const RecommendedForYou = localize( React.createClass( {
 
 	getInitialState() {
 		const recommendations = this.getRecommendations();
@@ -128,12 +129,12 @@ const RecommendedForYou = React.createClass( {
 
 	render() {
 		return (
-			<Main className="recommended-for-you">
+		    <Main className="recommended-for-you">
 				<MobileBackToSidebar>
-					<h1>{ this.translate( 'Recommendations' ) }</h1>
+					<h1>{ this.props.translate( 'Recommendations' ) }</h1>
 				</MobileBackToSidebar>
 
-				<h2 className="reader-recommended__heading">{ this.translate( 'We think you\'ll like' ) }</h2>
+				<h2 className="reader-recommended__heading">{ this.props.translate( 'We think you\'ll like' ) }</h2>
 				<InfiniteList
 					items={ this.state.recommendations }
 					fetchingNextPage={ this.state.fetching }
@@ -145,8 +146,8 @@ const RecommendedForYou = React.createClass( {
 					renderLoadingPlaceholders={ this.renderPlaceholders }
 					/>
 				</Main>
-			);
+		);
 	}
-} );
+} ) );
 
 export default RecommendedForYou;

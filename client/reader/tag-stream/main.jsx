@@ -2,6 +2,7 @@
  * External Dependencies
  */
 import React from 'react';
+import { localize } from 'i18n-calypso';
 import { connect } from 'react-redux';
 
 /**
@@ -23,7 +24,7 @@ import QueryReaderFollowedTags from 'components/data/query-reader-followed-tags'
 import QueryReaderTag from 'components/data/query-reader-tag';
 import { find } from 'lodash';
 
-const TagStream = React.createClass( {
+const TagStream = localize( React.createClass( {
 
 	_isMounted: false,
 
@@ -107,10 +108,10 @@ const TagStream = React.createClass( {
 		}
 
 		return (
-			<Stream { ...this.props } listName={ this.state.title } emptyContent={ emptyContent } showFollowInHeader={ true } >
+		    <Stream { ...this.props } listName={ this.state.title } emptyContent={ emptyContent } showFollowInHeader={ true } >
 				<QueryReaderFollowedTags />
 				<QueryReaderTag tag={ this.props.decodedTagSlug } />
-				<DocumentHead title={ this.translate( '%s ‹ Reader', { args: title } ) } />
+				<DocumentHead title={ this.props.translate( '%s ‹ Reader', { args: title } ) } />
 				{ this.props.showBack && <HeaderBack /> }
 				<TagStreamHeader
 					title={ title }
@@ -122,7 +123,7 @@ const TagStream = React.createClass( {
 			</Stream>
 		);
 	}
-} );
+} ) );
 
 export default connect(
 	state => ( {

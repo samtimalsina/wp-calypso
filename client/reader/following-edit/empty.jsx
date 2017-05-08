@@ -2,7 +2,7 @@
  * External dependencies
  */
 import React from 'react';
-import i18n from 'i18n-calypso';
+import i18n, { localize } from 'i18n-calypso';
 
 /**
  * Internal dependencies
@@ -10,7 +10,7 @@ import i18n from 'i18n-calypso';
 import EmptyContent from 'components/empty-content';
 import { recordAction, recordGaEvent, recordTrack } from 'reader/stats';
 
-const FollowingEditEmptyContent = React.createClass( {
+const FollowingEditEmptyContent = localize( React.createClass( {
 	componentDidMount() {
 		recordTrack( 'calypso_reader_empty_manage_following_loaded' );
 	},
@@ -30,11 +30,11 @@ const FollowingEditEmptyContent = React.createClass( {
 	render() {
 		const action = ( <a className="empty-content__action button is-primary"
 				onClick={ this.recordAction }
-				href="/read/search">{ this.translate( 'Find Sites to Follow' ) }</a>),
+				href="/read/search">{ this.props.translate( 'Find Sites to Follow' ) }</a>),
 			secondaryAction = (
 				<a className="empty-content__action button"
 					onClick={ this.recordSecondaryAction }
-					href="/discover">{ this.translate( 'Explore Discover' ) }</a> );
+					href="/discover">{ this.props.translate( 'Explore Discover' ) }</a> );
 
 		return (
 			<EmptyContent
@@ -47,6 +47,6 @@ const FollowingEditEmptyContent = React.createClass( {
 			/>
 		);
 	}
-} );
+} ) );
 
 export default FollowingEditEmptyContent;
