@@ -27,7 +27,7 @@ class WaitingTwoFactorNotificationApproval extends React.Component {
 
 	componentWillReceiveProps( nextProps ) {
 		if ( ! this.props.pushSuccess && nextProps.pushSuccess ) {
-			window.location.replace( '/' );
+			this.props.onSuccess();
 		}
 	}
 
@@ -68,6 +68,7 @@ class WaitingTwoFactorNotificationApproval extends React.Component {
 }
 
 WaitingTwoFactorNotificationApproval.propTypes = {
+	onSuccess: React.PropTypes.func.required,
 	pushSuccess: React.PropTypes.bool.required,
 	startPollAppPushAuth: React.PropTypes.func.required,
 	stopPollAppPushAuth: React.PropTypes.func.required,
