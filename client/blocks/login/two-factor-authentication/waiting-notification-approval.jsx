@@ -1,9 +1,8 @@
 /**
  * External dependencies
  */
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 /**
  * Internal dependencies
@@ -16,7 +15,14 @@ import {
 	stopPollAppPushAuth,
 } from 'state/login/actions';
 
-class WaitingTwoFactorNotificationApproval extends React.Component {
+class WaitingTwoFactorNotificationApproval extends Component {
+	static propTypes = {
+		onSuccess: PropTypes.func.isRequired,
+		pushSuccess: PropTypes.bool.isRequired,
+		startPollAppPushAuth: PropTypes.func.isRequired,
+		stopPollAppPushAuth: PropTypes.func.isRequired,
+	};
+
 	componentDidMount() {
 		this.props.startPollAppPushAuth();
 	}
@@ -67,19 +73,12 @@ class WaitingTwoFactorNotificationApproval extends React.Component {
 	}
 }
 
-WaitingTwoFactorNotificationApproval.propTypes = {
-	onSuccess: React.PropTypes.func.required,
-	pushSuccess: React.PropTypes.bool.required,
-	startPollAppPushAuth: React.PropTypes.func.required,
-	stopPollAppPushAuth: React.PropTypes.func.required,
-};
-
 export default connect(
 	state => ( {
 		pushSuccess: getTwoFactorPushPollSuccess( state ),
 	} ),
-	dispatch => bindActionCreators( {
+	{
 		startPollAppPushAuth,
 		stopPollAppPushAuth,
-	}, dispatch )
+	},
 )( localize( WaitingTwoFactorNotificationApproval ) );
