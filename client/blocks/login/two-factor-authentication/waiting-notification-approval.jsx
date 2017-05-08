@@ -10,39 +10,38 @@ import { bindActionCreators } from 'redux';
  */
 import Card from 'components/card';
 import { localize } from 'i18n-calypso';
+import { getTwoFactorPushPollSuccess } from 'state/login/selectors';
 import {
 	startPollAppPushAuth,
 	stopPollAppPushAuth,
 } from 'state/login/actions';
-import {
-	getTwoFactorPushPollInProgress,
-	getTwoFactorPushPollSuccess,
-} from 'state/login/selectors';
 
 class WaitingTwoFactorNotificationApproval extends React.Component {
 	componentDidMount() {
 		this.props.startPollAppPushAuth();
 	}
+
 	componentWillUnmount() {
 		this.props.stopPollAppPushAuth();
+	}
+
+	componentWillReceiveProps( nextProps ) {
+		if ( ! this.props.pushSuccess && nextProps.pushSuccess ) {
+			window.location.replace( '/' );
+		}
 	}
 
 	render() {
 		const {
 			translate,
 			pushSuccess,
-			pollInProgress,
 		} = this.props;
-
-		if ( pushSuccess ) {
-			return <h1>Success!</h1>;
-		}
 
 		return <form>
 			<Card className="two-factor-authentication__push-notification-screen is-compact">
-				<p>inProgress: { pollInProgress ? 'true' : 'false' }</p>
 				<p>
-					{ translate( 'We just sent a push notification to your WordPress mobile app. ' +
+					{ pushSuccess ? translate( 'Awesome, you are now logged in! One moment while we take you to homepage…' )
+						: translate( 'We just sent a push notification to your WordPress mobile app. ' +
 						'Swipe or tap to open and verify your login.' ) }
 				</p>
 				<div>
@@ -68,10 +67,15 @@ class WaitingTwoFactorNotificationApproval extends React.Component {
 	}
 }
 
+WaitingTwoFactorNotificationApproval.propTypes = {
+	pushSuccess: React.PropTypes.bool.required,
+	startPollAppPushAuth: React.PropTypes.func.required,
+	stopPollAppPushAuth: React.PropTypes.func.required,
+};
+
 export default connect(
 	state => ( {
 		pushSuccess: getTwoFactorPushPollSuccess( state ),
-		pollInProgress: getTwoFactorPushPollInProgress( state )
 	} ),
 	dispatch => bindActionCreators( {
 		startPollAppPushAuth,
