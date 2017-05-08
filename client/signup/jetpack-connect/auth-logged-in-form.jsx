@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import Gridicon from 'gridicons';
 import addQueryArgs from 'lib/route/add-query-args';
 import debugModule from 'debug';
@@ -40,6 +40,37 @@ const PLANS_PAGE = '/jetpack/connect/plans/';
 const debug = debugModule( 'calypso:jetpack-connect:authorize-form' );
 
 class LoggedInForm extends Component {
+	static propTypes = {
+		authAttempts: PropTypes.number.isRequired,
+		authorize: PropTypes.func.isRequired,
+		calypsoStartedConnection: PropTypes.bool.isRequired,
+		goBackToWpAdmin: PropTypes.func.isRequired,
+		isAlreadyOnSitesList: PropTypes.bool.isRequired,
+		isFetchingSites: PropTypes.bool.isRequired,
+		isSSO: PropTypes.bool.isRequired,
+		jetpackConnectAuthorize: PropTypes.shape( {
+			authorizeError: PropTypes.object.isRequired,
+			authorizeSuccess: PropTypes.bool.isRequired,
+			isRedirectingToWpAdmin: PropTypes.bool.isRequired,
+			queryObject: PropTypes.shape( {
+				already_authorized: PropTypes.bool.isRequired,
+				jp_version: PropTypes.string.isRequired,
+				new_user_started_connection: PropTypes.bool.isRequired,
+				redirect_after_auth: PropTypes.string.isRequired,
+				site: PropTypes.object.isRequired,
+			} ).isRequired,
+			siteReceived: PropTypes.bool.isRequired,
+		} ).isRequired,
+		plansFirst: PropTypes.bool.isRequired,
+		recordTracksEvent: PropTypes.func.isRequired,
+		requestHasExpiredSecretError: PropTypes.bool.isRequired,
+		requestHasXmlrpcError: PropTypes.bool.isRequired,
+		retryAuth: PropTypes.func.isRequired,
+		selectedPlan: PropTypes.string.isRequired,
+		siteSlug: PropTypes.string.isRequired,
+		user: PropTypes.object.isRequired,
+	};
+
 	state = { haveAuthorized: false };
 
 	componentWillMount() {
