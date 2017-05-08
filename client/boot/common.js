@@ -1,3 +1,7 @@
+// Initialize localStorage polyfill before any dependencies are loaded
+import initializeLocalStorage from 'lib/local-storage';
+initializeLocalStorage();
+
 /**
  * External dependencies
  */
