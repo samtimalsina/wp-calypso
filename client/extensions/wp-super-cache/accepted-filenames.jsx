@@ -40,7 +40,6 @@ class AcceptedFilenames extends Component {
 			fields: { pages },
 			isRequesting,
 			isSaving,
-			translate,
 		} = this.props;
 
 		return (
@@ -49,7 +48,7 @@ class AcceptedFilenames extends Component {
 				disabled={ isRequesting || isSaving }
 				onChange={ this.handleToggle( fieldName ) }>
 				<span>
-					{ translate( '%(label)s)', { args: { label: fieldLabel } } ) }
+					{ fieldLabel }
 				</span>
 			</FormToggle>
 		);
@@ -126,16 +125,16 @@ class AcceptedFilenames extends Component {
 						</FormSettingExplanation>
 
 						<FormFieldset>
-							{ this.renderToggle( 'single', 'Single Posts (is_single)' ) }
-							{ this.renderToggle( 'pages', 'Pages (is_page)' ) }
-							{ this.renderToggle( 'frontpage', 'Front Page (is_front_page)' ) }
-							{ this.renderToggle( 'home', 'Home (is_home)' ) }
-							{ this.renderToggle( 'archives', 'Archives (is_archive)' ) }
-							{ this.renderToggle( 'tag', 'Tags (is_tag)' ) }
-							{ this.renderToggle( 'category', 'Category (is_category)' ) }
-							{ this.renderToggle( 'feed', 'Feeds (is_feed)' ) }
-							{ this.renderToggle( 'search', 'Search Pages (is_search)' ) }
-							{ this.renderToggle( 'author', 'Author Pages (is_author)' ) }
+							{ this.renderToggle( 'single', translate( 'Single Posts (is_single)' ) ) }
+							{ this.renderToggle( 'pages', translate( 'Pages (is_page)' ) ) }
+							{ this.renderToggle( 'frontpage', translate( 'Front Page (is_front_page)' ) ) }
+							{ this.renderToggle( 'home', translate( 'Home (is_home)' ) ) }
+							{ this.renderToggle( 'archives', translate( 'Archives (is_archive)' ) ) }
+							{ this.renderToggle( 'tag', translate( 'Tags (is_tag)' ) ) }
+							{ this.renderToggle( 'category', translate( 'Category (is_category)' ) ) }
+							{ this.renderToggle( 'feed', translate( 'Feeds (is_feed)' ) ) }
+							{ this.renderToggle( 'search', translate( 'Search Pages (is_search)' ) ) }
+							{ this.renderToggle( 'author', translate( 'Author Pages (is_author)' ) ) }
 						</FormFieldset>
 
 						<FormFieldset>
