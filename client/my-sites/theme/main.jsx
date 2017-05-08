@@ -102,8 +102,18 @@ const ThemeSheet = React.createClass( {
 		};
 	},
 
-	componentDidMount() {
+	scrollToTop() {
 		window.scroll( 0, 0 );
+	},
+
+	componentDidMount() {
+		this.scrollToTop();
+	},
+
+	componentWillUpdate( nextProps ) {
+		if ( nextProps.id !== this.props.id ) {
+			this.scrollToTop();
+		}
 	},
 
 	isLoaded() {
@@ -273,6 +283,16 @@ const ThemeSheet = React.createClass( {
 		return <div>{ this.props.description }</div>;
 	},
 
+	renderNextTheme() {
+		const { next, siteSlug } = this.props;
+		const sitePart = siteSlug ? `/${ siteSlug }` : '';
+
+		const nextThemeHref = `/theme/${ next }${ sitePart }`;
+		return <SectionHeader
+			href={ nextThemeHref }
+			label={ i18n.translate( 'Next theme' ) } />;
+	},
+
 	renderOverviewTab() {
 		const { isWpcomTheme, download } = this.props;
 
@@ -284,6 +304,7 @@ const ThemeSheet = React.createClass( {
 				{ this.renderFeaturesCard() }
 				{ download && <ThemeDownloadCard href={ download } /> }
 				{ isWpcomTheme && this.renderRelatedThemes() }
+				{ isWpcomTheme && this.renderNextTheme() }
 			</div>
 		);
 	},
@@ -502,7 +523,7 @@ const ThemeSheet = React.createClass( {
 				href={ getUrl ? getUrl( this.props.id ) : null }
 				onClick={ this.onButtonClick }>
 				{ this.isLoaded() ? label : placeholder }
-				{ this.renderPrice() }
+				{ this.props.isWpcomTheme && this.renderPrice() }
 			</Button>
 		);
 	},

@@ -15,27 +15,35 @@ import CompactCard from 'components/card/compact';
 import DocumentHead from 'components/data/document-head';
 import SearchInput from 'components/search';
 import ReaderMain from 'components/reader-main';
-import { getReaderFeedsForQuery } from 'state/selectors';
+import { getReaderFeedsForQuery, getReaderFeedsCountForQuery } from 'state/selectors';
 import QueryReaderFeedsSearch from 'components/data/query-reader-feeds-search';
 import FollowingManageSubscriptions from './subscriptions';
-import SitesWindowScroller from './sites-window-scroller';
+import FollowingManageSearchFeedsResults from './feed-search-results';
 import MobileBackToSidebar from 'components/mobile-back-to-sidebar';
 import { requestFeedSearch } from 'state/reader/feed-searches/actions';
+import { addQueryArgs } from 'lib/url';
 
 class FollowingManage extends Component {
 	static propTypes = {
 		sitesQuery: PropTypes.string,
 		subsQuery: PropTypes.string,
+		subsSortOrder: PropTypes.oneOf( [ 'date-followed', 'alpha' ] ),
 		translate: PropTypes.func,
+		showMoreResults: PropTypes.bool,
 	};
 
 	static defaultProps = {
 		subsQuery: '',
 		sitesQuery: '',
+		showMoreResults: false,
 		forceRefresh: false,
+		subsSortOrder: 'date-followed',
 	}
 
-	state = { width: 800 };
+	state = {
+		width: 800,
+		forceRefresh: false,
+	};
 
 	// TODO make this common between our different search pages?
 	updateQuery = ( newValue ) => {
@@ -55,17 +63,18 @@ class FollowingManage extends Component {
 		}
 	}
 
+	handleSearchClosed = () => {
+		this.scrollToTop();
+		this.setState( { showMoreResults: false } );
+	}
+
 	scrollToTop = () => {
 		window.scrollTo( 0, 0 );
 	}
 
-	handleStreamMounted = ( ref ) => {
-		this.streamRef = ref;
-	}
-
-	handleSearchBoxMounted = ( ref ) => {
-		this.searchBoxRef = ref;
-	}
+	handleStreamMounted = ref => this.streamRef = ref;
+	handleSearchBoxMounted = ref => this.searchBoxRef = ref;
+	handleWindowScrollerMounted = ref => this.windowScrollerRef = ref;
 
 	resizeSearchBox = () => {
 		if ( this.searchBoxRef && this.streamRef ) {
@@ -83,10 +92,19 @@ class FollowingManage extends Component {
 			debounce( this.resizeSearchBox, 50 )
 		);
 		this.resizeSearchBox();
+
+		// this is a total hack. In React-Virtualized you need to tell a WindowScroller when the things
+		// above it has moved with a call to updatePosision().  Our issue is we don't have a good moment
+		// where we know that the content above the WindowScroller has settled down and so instead the solution
+		// here is to call updatePosition in a regular interval. the call takes about 0.1ms from empirical testing.
+		this.updatePosition = setInterval( () => {
+			this.windowScrollerRef && this.windowScrollerRef.updatePosition();
+		}, 300 );
 	}
 
 	componentWillUnmount() {
 		window.removeEventListener( 'resize', this.resizeListener );
+		clearInterval( this.windowScrollerRef );
 	}
 
 	componentWillReceiveProps( nextProps ) {
@@ -96,8 +114,20 @@ class FollowingManage extends Component {
 
 	fetchNextPage = offset => this.props.requestFeedSearch( this.props.sitesQuery, offset );
 
+	handleShowMoreClicked = () => {
+		page.replace( addQueryArgs( { showMoreResults: true }, window.location.pathname + window.location.search ) );
+	}
+
 	render() {
-		const { sitesQuery, subsQuery, translate, searchResults } = this.props;
+		const {
+			sitesQuery,
+			subsQuery,
+			subsSortOrder,
+			translate,
+			searchResults,
+			searchResultsCount,
+			showMoreResults
+		} = this.props;
 		const searchPlaceholderText = translate( 'Search millions of sites' );
 
 		return (
@@ -113,7 +143,7 @@ class FollowingManage extends Component {
 					<CompactCard className="following-manage__input-card">
 						<SearchInput
 							onSearch={ this.updateQuery }
-							onSearchClose={ this.scrollToTop }
+							onSearchClose={ this.handleSearchClosed }
 							autoFocus={ this.props.autoFocusInput }
 							delaySearch={ true }
 							delayTimeout={ 500 }
@@ -124,23 +154,24 @@ class FollowingManage extends Component {
 						</SearchInput>
 					</CompactCard>
 				</div>
-				{ ! sitesQuery && (
+				{ !! sitesQuery && (
+					<FollowingManageSearchFeedsResults
+						searchResults={ searchResults }
+						showMoreResults={ showMoreResults }
+						showMoreResultsClicked={ this.handleShowMoreClicked }
+						width={ this.state.width }
+						fetchNextPage={ this.fetchNextPage }
+						forceRefresh={ this.state.forceRefresh }
+						searchResultsCount={ searchResultsCount }
+					/>
+				) }
+				{ ! ( !! sitesQuery && showMoreResults ) && (
 					<FollowingManageSubscriptions
 						width={ this.state.width }
 						query={ subsQuery }
+						sortOrder={ subsSortOrder }
+						windowScrollerRef={ this.handleWindowScrollerMounted }
 					/>
-				) }
-				{ ( !! sitesQuery && searchResults && (
-					!! ( searchResults.length > 0 )
-					? <SitesWindowScroller
-							sites={ searchResults }
-							width={ this.state.width }
-							fetchNextPage={ this.fetchNextPage }
-							remoteTotalCount={ 200 }
-							forceRefresh={ this.state.forceRefresh }
-						/>
-						: <p> { translate( 'There were no site results for your query.' ) } </p>
-					)
 				) }
 			</ReaderMain>
 		);
@@ -150,6 +181,7 @@ class FollowingManage extends Component {
 export default connect(
 	( state, ownProps ) => ( {
 		searchResults: getReaderFeedsForQuery( state, ownProps.sitesQuery ),
+		searchResultsCount: getReaderFeedsCountForQuery( state, ownProps.sitesQuery ),
 	} ),
 	{ requestFeedSearch }
 )( localize( FollowingManage ) );

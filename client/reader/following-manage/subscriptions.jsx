@@ -5,6 +5,8 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { localize } from 'i18n-calypso';
 import escapeRegexp from 'escape-string-regexp';
+import { reverse, sortBy, trimStart } from 'lodash';
+import page from 'page';
 
 /**
  * Internal Dependencies
@@ -22,13 +24,18 @@ import UrlSearch from 'lib/url-search';
 import { getSiteName, getSiteUrl, getSiteDescription, getSiteAuthorName } from 'reader/get-helpers';
 import EllipsisMenu from 'components/ellipsis-menu';
 import PopoverMenuItem from 'components/popover/menu-item';
+import { formatUrlForDisplay, getFeedTitle } from 'reader/lib/feed-display-helper';
+import { addQueryArgs } from 'lib/url';
 
 class FollowingManageSubscriptions extends Component {
 	static propTypes = {
 		follows: PropTypes.array.isRequired,
 		doSearch: PropTypes.func.isRequired,
 		query: PropTypes.string,
+		sortOrder: PropTypes.oneOf( [ 'date-followed', 'alpha' ] ),
+		windowScrollerRef: PropTypes.func,
 	};
+
 	state = { forceRefresh: false };
 
 	filterFollowsByQuery( query ) {
@@ -49,14 +56,37 @@ class FollowingManageSubscriptions extends Component {
 		} );
 	}
 
+	sortFollows( follows, sortOrder ) {
+		const { getFeed, getSite } = this.props;
+
+		if ( sortOrder === 'alpha' ) {
+			return sortBy( follows, follow => {
+				const feed = getFeed( follow.feed_ID );
+				const site = getSite( follow.site_ID );
+				const displayUrl = formatUrlForDisplay( follow.URL );
+				return trimStart( getFeedTitle( site, feed, displayUrl ).toLowerCase() );
+			} );
+		}
+
+		return reverse( sortBy( follows, [ 'date_subscribed' ] ) );
+	}
+
+	handleSortChange = ( sort ) => {
+		page.replace( addQueryArgs( { sort }, window.location.pathname + window.location.search ) );
+	};
+
 	componentWillReceiveProps( nextProps ) {
-		const forceRefresh = ( nextProps.query !== this.props.query );
+		const forceRefresh = (
+			( nextProps.query !== this.props.query ) ||
+			( nextProps.sortOrder !== this.props.sortOrder )
+		);
 		this.setState( { forceRefresh } );
 	}
 
 	render() {
-		const { follows, width, translate, query, followsCount } = this.props;
+		const { follows, width, translate, query, followsCount, sortOrder } = this.props;
 		const filteredFollows = this.filterFollowsByQuery( query );
+		const sortedFollows = this.sortFollows( filteredFollows, sortOrder );
 
 		return (
 			<div className="following-manage__subscriptions">
@@ -70,7 +100,10 @@ class FollowingManageSubscriptions extends Component {
 						}
 						</h1>
 					<div className="following-manage__subscriptions-sort">
-						<FollowingManageSortControls />
+						<FollowingManageSortControls
+							sortOrder={ sortOrder }
+							onSortChange={ this.handleSortChange }
+						/>
 					</div>
 					<div className="following-manage__subscriptions-search">
 						<FollowingManageSearchFollowed onSearch={ this.props.doSearch } initialValue={ query } />
@@ -89,10 +122,11 @@ class FollowingManageSubscriptions extends Component {
 				<div className="following-manage__subscriptions-list">
 					{ follows &&
 						<SitesWindowScroller
-							sites={ filteredFollows }
+							sites={ sortedFollows }
 							width={ width }
-							remoteTotalCount={ followsCount }
+							remoteTotalCount={ sortedFollows.length }
 							forceRefresh={ this.state.forceRefresh }
+							windowScrollerRef={ this.props.windowScrollerRef }
 						/>
 					}
 				</div>
