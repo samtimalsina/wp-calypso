@@ -22,9 +22,9 @@ const loginErrorMessages = {
 	empty_password: translate( 'The password field is empty.' ),
 	empty_two_step_code: translate( 'The verification code field is empty.' ),
 	empty_username: translate( 'The username field is empty.' ),
-	incorrect_password: translate( 'Invalid username or password.' ),
+	incorrect_password: translate( 'Invalid password' ),
 	invalid_two_step_code: translate( 'Invalid verification code.' ),
-	invalid_username: translate( 'Invalid username or password.' ),
+	invalid_username: translate( 'Invalid username' ),
 	unknown: translate( 'Invalid username or password.' ),
 	account_unactivated: translate( 'This account has not been activated. Please check your email for an activation link.' ),
 };
