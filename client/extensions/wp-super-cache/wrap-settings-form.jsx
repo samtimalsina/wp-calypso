@@ -24,7 +24,10 @@ import {
 	getSelectedSite,
 	getSelectedSiteId,
 } from 'state/ui/selectors';
-import { testCache } from './state/cache/actions';
+import {
+	deleteCache,
+	testCache,
+} from './state/cache/actions';
 import {
 	errorNotice,
 	removeNotice,
@@ -33,7 +36,9 @@ import {
 import { saveSettings } from './state/settings/actions';
 import {
 	getCacheTestResults,
+	isCacheDeleteSuccessful,
 	isCacheTestSuccessful,
+	isDeletingCache,
 	isTestingCache,
 } from './state/cache/selectors';
 import { getNotices } from './state/notices/selectors';
@@ -79,6 +84,7 @@ const wrapSettingsForm = getFormSettings => SettingsForm => {
 				}
 			}
 
+			this.showCacheDeleteNotice( prevProps );
 			this.showCacheTestNotice( prevProps );
 		}
 
@@ -107,8 +113,30 @@ const wrapSettingsForm = getFormSettings => SettingsForm => {
 			this.props.replaceFields( nextNonDirtyFields );
 		}
 
-		handleChange = field => event => {
-			this.props.updateFields( { [ field ]: event.target.value } );
+		showCacheDeleteNotice = ( prevProps ) => {
+			if ( this.props.isDeleting || ! prevProps.isDeleting ) {
+				return;
+			}
+
+			const {
+				isDeleteSuccessful,
+				site,
+				translate,
+			} = this.props;
+
+			this.props.removeNotice( 'wpsc-settings-save' );
+
+			if ( isDeleteSuccessful ) {
+				this.props.successNotice(
+					translate( 'Cache successfully deleted on %(site)s.', { args: { site: site && site.title } } ),
+					{ id: 'wpsc-cache-delete' }
+				);
+			} else {
+				this.props.errorNotice(
+					translate( 'There was a problem deleting the cache. Please try again.' ),
+					{ id: 'wpsc-cache-delete' }
+				);
+			}
 		};
 
 		showCacheTestNotice = ( prevProps ) => {
@@ -135,6 +163,15 @@ const wrapSettingsForm = getFormSettings => SettingsForm => {
 					{ id: 'wpsc-cache-test' }
 				);
 			}
+		};
+
+		removeCacheNotices = () => {
+			this.props.removeNotice( 'wpsc-cache-delete' );
+			this.props.removeNotice( 'wpsc-cache-test' );
+		}
+
+		handleChange = field => event => {
+			this.props.updateFields( { [ field ]: event.target.value } );
 		};
 
 		handleRadio = event => {
@@ -188,18 +225,30 @@ const wrapSettingsForm = getFormSettings => SettingsForm => {
 				siteId,
 			} = this.props;
 
+			this.removeCacheNotices();
 			this.props.removeNotice( 'wpsc-settings-save' );
-			this.props.removeNotice( 'wpsc-cache-test' );
 			this.props.saveSettings( siteId, pick( fields, settingsFields ) );
 		};
+
+		handleDeleteCache = ( deleteAll, deleteExpired ) => {
+			this.removeCacheNotices();
+			this.props.deleteCache( this.props.siteId, deleteAll, deleteExpired );
+		}
+
+		handleTestCache = httpOnly => {
+			this.removeCacheNotices();
+			this.props.testCache( this.props.siteId, httpOnly );
+		}
 
 		render() {
 			const utils = {
 				handleAutosavingToggle: this.handleAutosavingToggle,
 				handleChange: this.handleChange,
+				handleDeleteCache: this.handleDeleteCache,
 				handleRadio: this.handleRadio,
 				handleSelect: this.handleSelect,
 				handleSubmitForm: this.handleSubmitForm,
+				handleTestCache: this.handleTestCache,
 				handleToggle: this.handleToggle,
 				setFieldArrayValue: this.setFieldArrayValue,
 			};
@@ -221,32 +270,10 @@ const wrapSettingsForm = getFormSettings => SettingsForm => {
 			const isSaving = isSavingSettings( state, siteId );
 			const isSaveSuccessful = isSettingsSaveSuccessful( state, siteId );
 			const notices = getNotices( state, siteId );
-			const settings = Object.assign( {}, getSettings( state, siteId ), {
-				// Miscellaneous
-				cache_compression_disabled: false,
-
-				// Accepted Filenames & Rejected URIs
-				accepted_files: 'wp-comments-popup.php',
-				rejected_uri: 'wp-.*\.php',
-
-				// Rejected User Agents
-				rejected_user_agent: 'bot\nia_archive\nslurp\ncrawl\nspider\nYandex',
-
-				// Lock Down
-				lock_down: false,
-
-				// Directly Cached Files
-				cache_direct_pages: [
-					'/about/',
-					'/home/',
-				],
-				cache_readonly: false,
-				cache_writable: false,
-			} );
+			const settings = getSettings( state, siteId );
 			const isRequesting = isRequestingSettings( state, siteId ) && ! settings;
 			// Don't include read-only fields when saving.
 			const settingsFields = keys( omit( settings, [
-				'cache_compression_disabled',
 				'cache_direct_pages',
 				'cache_disable_locking',
 				'cache_mobile_browsers',
@@ -264,12 +291,16 @@ const wrapSettingsForm = getFormSettings => SettingsForm => {
 				'supercache',
 				'wpcache',
 			] ) );
+			const isDeleting = isDeletingCache( state, siteId );
+			const isDeleteSuccessful = isCacheDeleteSuccessful( state, siteId );
 			const isTesting = isTestingCache( state, siteId );
 			const isTestSuccessful = isCacheTestSuccessful( state, siteId );
 			const cacheTestResults = getCacheTestResults( state, siteId );
 
 			return {
 				cacheTestResults,
+				isDeleteSuccessful,
+				isDeleting,
 				isRequesting,
 				isSaveSuccessful,
 				isSaving,
@@ -284,6 +315,7 @@ const wrapSettingsForm = getFormSettings => SettingsForm => {
 		},
 		dispatch => {
 			const boundActionCreators = bindActionCreators( {
+				deleteCache,
 				errorNotice,
 				removeNotice,
 				saveSettings,

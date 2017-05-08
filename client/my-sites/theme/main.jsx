@@ -102,8 +102,18 @@ const ThemeSheet = React.createClass( {
 		};
 	},
 
-	componentDidMount() {
+	scrollToTop() {
 		window.scroll( 0, 0 );
+	},
+
+	componentDidMount() {
+		this.scrollToTop();
+	},
+
+	componentWillUpdate( nextProps ) {
+		if ( nextProps.id !== this.props.id ) {
+			this.scrollToTop();
+		}
 	},
 
 	isLoaded() {
@@ -513,7 +523,7 @@ const ThemeSheet = React.createClass( {
 				href={ getUrl ? getUrl( this.props.id ) : null }
 				onClick={ this.onButtonClick }>
 				{ this.isLoaded() ? label : placeholder }
-				{ this.renderPrice() }
+				{ this.props.isWpcomTheme && this.renderPrice() }
 			</Button>
 		);
 	},

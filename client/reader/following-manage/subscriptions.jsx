@@ -33,7 +33,9 @@ class FollowingManageSubscriptions extends Component {
 		doSearch: PropTypes.func.isRequired,
 		query: PropTypes.string,
 		sortOrder: PropTypes.oneOf( [ 'date-followed', 'alpha' ] ),
+		windowScrollerRef: PropTypes.func,
 	};
+
 	state = { forceRefresh: false };
 
 	filterFollowsByQuery( query ) {
@@ -122,8 +124,9 @@ class FollowingManageSubscriptions extends Component {
 						<SitesWindowScroller
 							sites={ sortedFollows }
 							width={ width }
-							remoteTotalCount={ followsCount }
+							remoteTotalCount={ sortedFollows.length }
 							forceRefresh={ this.state.forceRefresh }
+							windowScrollerRef={ this.props.windowScrollerRef }
 						/>
 					}
 				</div>
