@@ -720,7 +720,7 @@
       }
     },
     "caniuse-db": {
-      "version": "1.0.30000665"
+      "version": "1.0.30000666"
     },
     "caseless": {
       "version": "0.12.0"
@@ -1004,7 +1004,7 @@
           "version": "6.0.4"
         },
         "minimatch": {
-          "version": "3.0.3"
+          "version": "3.0.4"
         }
       }
     },
@@ -1642,14 +1642,14 @@
       }
     },
     "eslint-plugin-wpcalypso": {
-      "version": "3.1.1",
+      "version": "3.2.0",
       "dev": true
     },
     "esmangle-evaluator": {
       "version": "1.0.1"
     },
     "espree": {
-      "version": "3.4.2",
+      "version": "3.4.3",
       "dev": true,
       "dependencies": {
         "acorn": {
@@ -1988,7 +1988,7 @@
           "version": "4.16.6"
         },
         "minimatch": {
-          "version": "3.0.3"
+          "version": "3.0.4"
         }
       }
     },
@@ -2170,6 +2170,12 @@
         },
         "commander": {
           "version": "2.9.0"
+        },
+        "glob": {
+          "version": "7.1.1"
+        },
+        "minimatch": {
+          "version": "3.0.4"
         }
       }
     },
@@ -2940,7 +2946,7 @@
           "dev": true
         },
         "minimatch": {
-          "version": "3.0.3",
+          "version": "3.0.4",
           "dev": true
         },
         "supports-color": {
@@ -2986,7 +2992,7 @@
       "dev": true,
       "dependencies": {
         "minimatch": {
-          "version": "3.0.3",
+          "version": "3.0.4",
           "dev": true
         }
       }
@@ -3039,7 +3045,7 @@
       "version": "0.1.16",
       "dependencies": {
         "minimatch": {
-          "version": "3.0.3"
+          "version": "3.0.4"
         }
       }
     },
@@ -3050,7 +3056,7 @@
       "version": "3.6.1",
       "dependencies": {
         "minimatch": {
-          "version": "3.0.3"
+          "version": "3.0.4"
         },
         "semver": {
           "version": "5.3.0"
@@ -3190,7 +3196,7 @@
       }
     },
     "npmlog": {
-      "version": "4.0.2"
+      "version": "4.1.0"
     },
     "nth-check": {
       "version": "1.0.1",
@@ -3717,7 +3723,7 @@
       "version": "2.1.0",
       "dependencies": {
         "minimatch": {
-          "version": "3.0.3"
+          "version": "3.0.4"
         },
         "readable-stream": {
           "version": "2.2.9"
@@ -3910,7 +3916,7 @@
           "version": "7.1.1"
         },
         "minimatch": {
-          "version": "3.0.3"
+          "version": "3.0.4"
         }
       }
     },
@@ -4977,15 +4983,19 @@
           "dev": true
         },
         "engine.io": {
-          "version": "1.8.3",
+          "version": "1.8.4",
           "dev": true
         },
         "engine.io-client": {
-          "version": "1.8.3",
+          "version": "1.8.4",
           "dev": true,
           "dependencies": {
             "component-emitter": {
               "version": "1.2.1",
+              "dev": true
+            },
+            "ws": {
+              "version": "1.1.2",
               "dev": true
             }
           }
@@ -5027,7 +5037,7 @@
           "dev": true
         },
         "socket.io": {
-          "version": "1.7.3",
+          "version": "1.7.4",
           "dev": true
         },
         "socket.io-adapter": {
@@ -5035,7 +5045,7 @@
           "dev": true
         },
         "socket.io-client": {
-          "version": "1.7.3",
+          "version": "1.7.4",
           "dev": true,
           "dependencies": {
             "component-emitter": {
@@ -5059,7 +5069,7 @@
           }
         },
         "ws": {
-          "version": "1.1.2",
+          "version": "1.1.4",
           "dev": true
         },
         "xmlhttprequest-ssl": {
